@@ -1,7 +1,5 @@
 #!/bin/sh
 
-ver=1.1.0
-
-GOOS=linux GOARCH=amd64 go build -o dist/stabl_linux-$ver main.go
-GOOS=windows GOARCH=amd64 go build -o dist/stabl_windows-$ver.exe main.go
-GOOS=darwin GOARCH=amd64 go build -o dist/stabl_mac-$ver main.go
+GOOS=linux GOARCH=amd64 go build -o dist/stabl main.go
+GOOS=darwin GOARCH=amd64 go build -o dist/stabl_darwin main.go
+GOOS=windows GOARCH=amd64 go build -o dist/stabl.exe main.go

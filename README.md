@@ -40,19 +40,19 @@ After downloading and configuring `stabl`, you can pass the path to the config f
 - **Linux**:
 
   ```bash
-  ./stabl_linux --config=path/to/config.json
+  ./stabl --config=path/to/config.json
   ```
 
 - **macOS**:
 
   ```bash
-  ./stabl_mac --config=path/to/config.json
+  ./stabl_darwin --config=path/to/config.json
   ```
 
 - **Windows**:
 
   ```bash
-  stabl_windows.exe --config=path/to/config.json
+  stabl.exe --config=path/to/config.json
   ```
 
 ## Contributing
