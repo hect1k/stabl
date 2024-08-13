@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ver=1.0.1
+ver=1.1.0
 
 GOOS=linux GOARCH=amd64 go build -o dist/stabl_linux-$ver main.go
 GOOS=windows GOARCH=amd64 go build -o dist/stabl_windows-$ver.exe main.go

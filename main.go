@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,14 +13,14 @@ import (
 )
 
 type Config struct {
-	Port    int
-	Servers []string
+	Port       int
+	Servers    []string
 	checkAfter int
 }
 
 type Server struct {
-	URL string
-	Proxy *httputil.ReverseProxy
+	URL     string
+	Proxy   *httputil.ReverseProxy
 	Healthy bool
 }
 
@@ -34,7 +35,10 @@ var checkAfter int
 
 func main() {
 
-	file, err := os.Open("config.json")
+	configFilePath := flag.String("config", "config.json", "Path to the configuration file")
+	flag.Parse()
+
+	file, err := os.Open(*configFilePath)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return
@@ -70,7 +74,7 @@ func main() {
 
 	http.HandleFunc("/", forwardRequest)
 	log.Println("Starting load balancer on port:", config.Port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Port),nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.Port), nil))
 }
 
 func forwardRequest(w http.ResponseWriter, r *http.Request) {

@@ -14,7 +14,7 @@
 
 1. **Download the latest release:**
 
-   Visit the [Releases page](https://github.com/nnisarggada/stabl/releases) to download the latest version of `stabl` for your operating system.
+   Visit the [Releases page](https://github.com/nnisarggada/stabl/releases/latest) to download the latest version of `stabl` for your operating system.
 
 2. **Extract the downloaded file (if necessary)** and move the executable to your desired directory.
 
@@ -35,24 +35,24 @@
 
 ## Usage
 
-After downloading and configuring `stabl`, you can run it from the command line in the same directory as `config.json`.
+After downloading and configuring `stabl`, you can pass the path to the config file as a flag. The default config path is `./config.json`.
 
 - **Linux**:
 
   ```bash
-  ./stabl_linux
+  ./stabl_linux --config=path/to/config.json
   ```
 
 - **macOS**:
 
   ```bash
-  ./stabl_mac
+  ./stabl_mac --config=path/to/config.json
   ```
 
 - **Windows**:
 
   ```bash
-  stabl_windows.exe
+  stabl_windows.exe --config=path/to/config.json
   ```
 
 ## Contributing
