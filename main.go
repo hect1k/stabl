@@ -36,36 +36,36 @@ var checkAfter int
 func main() {
 
 	configFilePath := flag.String("config", "config.json", "Path to the configuration file")
+	portNumber := flag.Int("port", 0, "Port number to listen on")
 	flag.Parse()
 
 	file, err := os.Open(*configFilePath)
 	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return
+		log.Fatal("Error opening config file:", err)
 	}
 	defer file.Close()
 
 	decoder := json.NewDecoder(file)
 	err = decoder.Decode(&config)
 	if err != nil {
-		fmt.Println("Error decoding JSON:", err)
-		return
+		log.Fatal("Error decoding JSON:", err)
+	}
+
+	if *portNumber != 0 {
+		config.Port = *portNumber
 	}
 
 	if config.Port == 0 {
-		fmt.Println("No port specified in config.json")
-		return
+		log.Fatal("Port number not specified in config.json or as a flag")
 	}
 
 	if len(config.Servers) == 0 {
-		fmt.Println("No servers specified in config.json")
-		return
+		log.Fatal("No servers specified in config.json")
 	}
 
 	serverPool, err = createPool()
 	if err != nil {
-		fmt.Println("Error creating server pool:", err)
-		return
+		log.Fatal("Error creating server pool:", err)
 	}
 
 	currentServer = 0

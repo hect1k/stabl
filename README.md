@@ -35,24 +35,26 @@
 
 ## Usage
 
-After downloading and configuring `stabl`, you can pass the path to the config file as a flag. The default config path is `./config.json`.
+After downloading and configuring `stabl`, you can pass the path to the config file and the port as flags. The default config path is `./config.json`. The default port is `8080`.
+
+**‼️ NOTE: The `--port` flag will OVERRIDE the port in the config file.**
 
 - **Linux**:
 
   ```bash
-  ./stabl --config=path/to/config.json
+  ./stabl --config=path/to/config.json --port=8080
   ```
 
 - **macOS**:
 
   ```bash
-  ./stabl_darwin --config=path/to/config.json
+  ./stabl_darwin --config=path/to/config.json --port=8080
   ```
 
 - **Windows**:
 
   ```bash
-  stabl.exe --config=path/to/config.json
+  stabl.exe --config=path/to/config.json --port=8080
   ```
 
 ## Contributing
