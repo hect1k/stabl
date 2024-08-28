@@ -9,6 +9,8 @@
 - **Round-Robin Load Balancing**: Distributes traffic evenly across multiple servers using a round-robin method.
 - **Cross-Platform Support**: Compatible with Linux, macOS, and Windows.
 - **Easy to Use**: Simple setup and configuration.
+- **Customizable**: Configurable to suit your needs.
+- **Simple Logging**: Write load balancer activity to a file.
 
 ## Installation
 
@@ -25,36 +27,38 @@
    ```json
    {
      "port": 8080,
+     "checkAfter": 5,
      "servers": [
        "http://server1.example.com",
        "http://server2.example.com",
        "http://server3.example.com"
-     ]
+     ],
+     "logFile": "stabl.log"
    }
    ```
 
 ## Usage
 
-After downloading and configuring `stabl`, you can pass the path to the config file and the port as flags. The default config path is `./config.json`. The default port is `8080`.
+After downloading and configuring `stabl`, you can pass the path to the config file, the port number, and the path to the log file as flags. The default config path is `./config.json`. The default port is `8080`.
 
-**‼️ NOTE: The `--port` flag will OVERRIDE the port in the config file.**
+**‼️ NOTE: Any values passed as flags will override the values in the config file.**
 
 - **Linux**:
 
   ```bash
-  ./stabl --config=path/to/config.json --port=8080
+  ./stabl --config=path/to/config.json --port=8080 --logFile=path/to/log/file
   ```
 
 - **macOS**:
 
   ```bash
-  ./stabl_darwin --config=path/to/config.json --port=8080
+  ./stabl_darwin --config=path/to/config.json --port=8080 --logFile=path/to/log/file
   ```
 
 - **Windows**:
 
   ```bash
-  stabl.exe --config=path/to/config.json --port=8080
+  stabl.exe --config=path/to/config.json --port=8080 --logFile=path/to/log/file
   ```
 
 ## Contributing

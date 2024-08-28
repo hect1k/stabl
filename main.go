@@ -16,6 +16,7 @@ type Config struct {
 	Port       int
 	Servers    []string
 	checkAfter int
+	LogFile    string
 }
 
 type Server struct {
@@ -32,11 +33,19 @@ var config Config
 var currentServer int
 var serverPool ServerPool
 var checkAfter int
+var logFile *os.File
+
+var (
+	WarningLogger *log.Logger
+	InfoLogger    *log.Logger
+	ErrorLogger   *log.Logger
+)
 
 func main() {
 
 	configFilePath := flag.String("config", "config.json", "Path to the configuration file")
 	portNumber := flag.Int("port", 0, "Port number to listen on")
+	logFileFlag := flag.String("logFile", "", "Path to the log file")
 	flag.Parse()
 
 	file, err := os.Open(*configFilePath)
@@ -49,6 +58,28 @@ func main() {
 	err = decoder.Decode(&config)
 	if err != nil {
 		log.Fatal("Error decoding JSON:", err)
+	}
+
+	if *logFileFlag != "" {
+		logFile, err := os.OpenFile(*logFileFlag, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+		if err != nil {
+			log.Fatal("Error opening log file:", err)
+		}
+		InfoLogger = log.New(logFile, "[INFO]: ", log.Ldate|log.Ltime|log.Lshortfile)
+		WarningLogger = log.New(logFile, "[WARNING]: ", log.Ldate|log.Ltime|log.Lshortfile)
+		ErrorLogger = log.New(logFile, "[ERROR]: ", log.Ldate|log.Ltime|log.Lshortfile)
+	} else if config.LogFile != "" {
+		logFile, err := os.OpenFile(config.LogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+		if err != nil {
+			log.Fatal("Error opening log file:", err)
+		}
+		InfoLogger = log.New(logFile, "[INFO]: ", log.Ldate|log.Ltime|log.Lshortfile)
+		WarningLogger = log.New(logFile, "[WARNING]: ", log.Ldate|log.Ltime|log.Lshortfile)
+		ErrorLogger = log.New(logFile, "[ERROR]: ", log.Ldate|log.Ltime|log.Lshortfile)
+	} else {
+		InfoLogger = log.New(os.Stdout, "[INFO]: ", log.Ldate|log.Ltime|log.Lshortfile)
+		WarningLogger = log.New(os.Stdout, "[WARNING]: ", log.Ldate|log.Ltime|log.Lshortfile)
+		ErrorLogger = log.New(os.Stdout, "[ERROR]: ", log.Ldate|log.Ltime|log.Lshortfile)
 	}
 
 	if *portNumber != 0 {
@@ -83,7 +114,7 @@ func forwardRequest(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	log.Println("Forwarding request to:", server.URL)
+	InfoLogger.Println("Forwarding request to:", server.URL)
 	server.Proxy.ServeHTTP(w, r)
 	return
 }
@@ -93,7 +124,7 @@ func createPool() (ServerPool, error) {
 	for _, serverUrl := range config.Servers {
 		proxyURL, err := url.Parse(serverUrl)
 		if err != nil {
-			log.Println("Error parsing server URL:", err)
+			ErrorLogger.Println("Error parsing server URL:", err)
 		}
 		proxy := httputil.NewSingleHostReverseProxy(proxyURL)
 		servers = append(servers, Server{proxyURL.String(), proxy, true})
@@ -109,7 +140,7 @@ func getServer() (Server, error) {
 			return server, nil
 		}
 	}
-	log.Println("All servers are down!")
+	ErrorLogger.Println("All servers are down!")
 	return Server{}, fmt.Errorf("All servers are down :/")
 }
 
@@ -126,7 +157,7 @@ func healthCheck() {
 			_, err := http.Get(server.URL)
 			if err != nil {
 				serverPool.Servers[i].Healthy = false
-				log.Println("Server unhealthy:", server.URL)
+				WarningLogger.Println("Server unhealthy:", server.URL)
 			} else {
 				serverPool.Servers[i].Healthy = true
 			}
