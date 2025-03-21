@@ -26,7 +26,7 @@
 
 ### Step 1: Download the latest release
 
-Go to the [Releases page](https://github.com/nnisarggada/stabl/releases/latest) and download the appropriate version of `stabl` for your operating system.
+Go to the [Releases page](https://github.com/hect1k/stabl/releases/latest) and download the appropriate version of `stabl` for your operating system.
 
 ### Step 2: Extract and move the executable
 
@@ -98,4 +98,4 @@ This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
 ## Contact
 
-For questions, suggestions, or reporting issues, please open an issue on our [GitHub repository](https://github.com/nnisarggada/stabl).
+For questions, suggestions, or reporting issues, please open an issue on our [GitHub repository](https://github.com/hect1k/stabl).
