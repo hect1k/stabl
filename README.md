@@ -2,7 +2,7 @@
 
 **stabl** is a lightweight load balancer built in Go, using a round-robin algorithm to efficiently distribute incoming traffic across multiple servers. This tool helps to ensure better performance and reliability by stabilizing traffic and balancing load across your application servers.
 
-![stabl banner](https://dev.nnisarg.in/stabl/banner.jpg)
+![stabl banner](https://nnisarg.in/images/projects/stabl.jpg)
 
 # Table of Contents
 
